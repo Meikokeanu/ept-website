@@ -4,11 +4,11 @@ import { useRef, type CSSProperties } from "react";
 import { useScrollThrough } from "./hooks";
 
 const TEXT =
-  "Andere Apps vergleichen dich mit Leuten, die anders trainieren, anders leben und woanders angefangen haben. EPT vergleicht dich nur mit einer Person: dir von letzter Woche.";
+  "Im Gym gibt es immer jemanden, der mehr drückt. Darum geht es nicht. Die einzige Frage ist, ob du mehr drückst als vor einem Monat. EPT zeigt dir die Antwort nach jedem Training.";
 
 export default function Statement() {
   const ref = useRef<HTMLParagraphElement>(null);
-  const progress = useScrollThrough(ref, 0.8, 0.35);
+  const progress = useScrollThrough(ref, 0.85, 0.55);
   const words = TEXT.split(" ");
 
   return (

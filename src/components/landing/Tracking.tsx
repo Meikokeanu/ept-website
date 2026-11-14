@@ -1,14 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { GhostIcon } from "./Brand";
+import { useEffect, useRef, useState, type RefObject } from "react";
+import { StatusBar } from "./Phone";
 
-type SetRow = { last: string; kg: string; reps: string; heavier?: boolean };
+type SetRow = { kg: number; reps: number };
 
-const SETS: SetRow[] = [
-  { last: "80 x 6", kg: "80", reps: "6" },
-  { last: "80 x 6", kg: "80", reps: "6" },
-  { last: "80 x 6", kg: "82,5", reps: "6", heavier: true },
+const EXERCISES: { name: string; muscle: string; image: string; sets: SetRow[] }[] = [
+  {
+    name: "Butterfly (Maschine)",
+    muscle: "Mittlere Brust",
+    image: "/screens/ex-butterfly.webp",
+    sets: [
+      { kg: 100, reps: 8 },
+      { kg: 100, reps: 6 },
+      { kg: 100, reps: 5 },
+    ],
+  },
+  {
+    name: "Bauchmaschine",
+    muscle: "Bauch",
+    image: "/screens/ex-crunch.webp",
+    sets: [
+      { kg: 91, reps: 10 },
+      { kg: 91, reps: 8 },
+      { kg: 91, reps: 8 },
+    ],
+  },
 ];
 
 const REST = 120;
@@ -20,12 +37,42 @@ function clock(seconds: number): string {
   return m + ":" + (r < 10 ? "0" : "") + r;
 }
 
-function WorkoutDemo() {
-  const [done, setDone] = useState<boolean[]>([false, false, false]);
+function duration(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const r = seconds % 60;
+  return (m < 10 ? "0" : "") + m + ":" + (r < 10 ? "0" : "") + r;
+}
+
+// Fits the 390pt wide app screen into the phone frame at any size.
+function useFitScale(ref: RefObject<HTMLDivElement | null>): number {
+  const [scale, setScale] = useState(0.86);
+  useEffect(
+    function () {
+      const node = ref.current;
+      if (!node) return;
+      const observer = new ResizeObserver(function (entries) {
+        setScale(entries[0].contentRect.width / 390);
+      });
+      observer.observe(node);
+      return function () {
+        observer.disconnect();
+      };
+    },
+    [ref],
+  );
+  return scale;
+}
+
+function WorkoutScreen() {
+  const screenRef = useRef<HTMLDivElement>(null);
+  const scale = useFitScale(screenRef);
+  const [done, setDone] = useState<boolean[][]>([
+    [false, false, false],
+    [false, false, false],
+  ]);
   const [rest, setRest] = useState<number | null>(null);
   const [restTotal, setRestTotal] = useState(REST);
-  const [elapsed, setElapsed] = useState(12 * 60 + 48);
-  const [lastChecked, setLastChecked] = useState<number | null>(null);
+  const [elapsed, setElapsed] = useState(7);
 
   useEffect(function () {
     const id = window.setInterval(function () {
@@ -42,16 +89,15 @@ function WorkoutDemo() {
     };
   }, []);
 
-  function toggle(i: number) {
-    const next = done.slice();
-    next[i] = !next[i];
+  function toggle(ex: number, i: number) {
+    const next = done.map(function (row) {
+      return row.slice();
+    });
+    next[ex][i] = !next[ex][i];
     setDone(next);
-    if (next[i]) {
-      setLastChecked(i);
+    if (next[ex][i]) {
       setRest(REST);
       setRestTotal(REST);
-    } else {
-      setLastChecked(null);
     }
   }
 
@@ -62,106 +108,137 @@ function WorkoutDemo() {
     setRestTotal(Math.max(restTotal, value));
   }
 
-  const count = done.filter(Boolean).length;
-  const heavierDone = done[2];
-  const allDone = count === SETS.length;
+  const resting = rest !== null;
 
   return (
-    <div className="wo" role="group" aria-label="Beispiel: Sätze abhaken wie in der App">
-      <div className="wo__top">
-        <div>
-          <p className="wo__title">Aktives Workout</p>
-          <p className="wo__day">Tag 1</p>
-          <p className="wo__meta">Dauer: {clock(elapsed)}</p>
-          <p className="wo__meta">Fertig um 17:15</p>
+    <div ref={screenRef} className="phone__screen app">
+      <div className="app__canvas" style={{ transform: "scale(" + scale + ")" }}>
+        <div className="app__head">
+          <p className="app__title">Aktives Workout</p>
+          <p className="app__day">Tag 1</p>
+          <p className="app__meta">Dauer: {duration(elapsed)}</p>
+          <p className="app__meta">Fertig um 18:03</p>
+          <div className="app__actions" aria-hidden="true">
+            <span className="app__cancel">Abbrechen</span>
+            <span className="app__finish">Workout beenden</span>
+          </div>
         </div>
-        <p className={"wo__score" + (count > 0 ? " is-on" : "")} aria-live="polite">
-          +{count + (heavierDone ? 10 : 0)} <span>EPT</span>
-        </p>
-      </div>
 
-      <div className="wo__ex">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/screens/ex-incline.webp"
-          alt=""
-          width={120}
-          height={120}
-          className="wo__thumb"
-          loading="lazy"
-        />
-        <div className="wo__ex-text">
-          <p className="wo__ex-name">Schrägbankpresse (Maschine)</p>
-          <p className="wo__ex-muscle">Obere Brust</p>
-        </div>
-        <span className={"wo__ghost" + (heavierDone ? " is-on" : "")} aria-hidden={!heavierDone}>
-          <GhostIcon size={15} />
-          +3 %
-        </span>
-      </div>
-
-      <div className="wo__table">
-        <div className="wo__head" aria-hidden="true">
-          <span>Satz</span>
-          <span>Letztes Mal</span>
-          <span>kg</span>
-          <span>Wdh</span>
-          <span />
-        </div>
-        {SETS.map(function (set, i) {
-          const on = done[i];
-          return (
-            <div key={i} className={"wo__row" + (on ? " is-done" : "")}>
-              <span className="wo__n">{i + 1}</span>
-              <span className="wo__last">{set.last}</span>
-              <span className={"wo__cell" + (set.heavier ? " is-up" : "")}>{set.kg}</span>
-              <span className="wo__cell">{set.reps}</span>
-              <button
-                type="button"
-                className="wo__check"
-                aria-pressed={on}
-                aria-label={"Satz " + (i + 1) + (on ? " abgehakt" : " abhaken")}
-                onClick={function () {
-                  toggle(i);
-                }}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-                  <path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                {on && lastChecked === i ? (
-                  <span className="wo__plus" key={"p" + i + count}>
-                    +1
+        <div className="app__list">
+          {EXERCISES.map(function (ex, e) {
+            return (
+              <div key={ex.name} className="app__ex">
+                <div className="app__ex-head">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={ex.image} alt="" width={120} height={120} className="app__thumb" loading="lazy" />
+                  <div className="app__ex-text">
+                    <p className="app__ex-name">{ex.name}</p>
+                    <p className="app__ex-muscle">{ex.muscle}</p>
+                  </div>
+                  <span className="app__dots" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
                   </span>
-                ) : null}
-              </button>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className={"wo__note" + (allDone ? " is-on" : "")} aria-live="polite">
-        {allDone
-          ? "Satz 3 mit mehr Gewicht als letztes Mal. +10 Punkte."
-          : count === 0
-            ? "Tipp auf die Kreise und hak deine Sätze ab."
-            : "Pausentimer läuft. Nächster Satz kommt."}
-      </div>
-
-      <div className={"wo__timer" + (rest !== null ? " is-on" : "")} aria-hidden={rest === null}>
-        <button type="button" className="wo__adj" onClick={function () { adjust(-15); }} tabIndex={rest === null ? -1 : 0}>
-          −15
-        </button>
-        <div className="wo__bar">
-          <span className="wo__time">{clock(rest ?? 0)}</span>
-          <span
-            className="wo__fill"
-            style={{ transform: "scaleX(" + (rest === null ? 0 : rest / restTotal) + ")" }}
-          />
+                </div>
+                <div className="app__cols" aria-hidden="true">
+                  <span>Satz</span>
+                  <span>
+                    Letztes
+                    <br />
+                    Mal
+                  </span>
+                  <span>kg</span>
+                  <span>Wdh</span>
+                  <span />
+                </div>
+                {ex.sets.map(function (set, i) {
+                  const on = done[e][i];
+                  return (
+                    <div key={i} className={"app__row" + (on ? " is-done" : "")}>
+                      <span className="app__n">{i + 1}</span>
+                      <span className="app__last">
+                        {set.kg} x {set.reps}
+                      </span>
+                      <span className="app__cell">{set.kg}</span>
+                      <span className="app__cell">{set.reps}</span>
+                      <button
+                        type="button"
+                        className="app__check"
+                        aria-pressed={on}
+                        aria-label={ex.name + ", Satz " + (i + 1) + (on ? " abgehakt" : " abhaken")}
+                        onClick={function () {
+                          toggle(e, i);
+                        }}
+                      >
+                        {on ? (
+                          <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                            <path
+                              d="M6 16l6 6L25 7"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.6"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        ) : (
+                          <span className="app__ring" />
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
+                <p className="app__add" aria-hidden="true">
+                  + Satz
+                </p>
+              </div>
+            );
+          })}
         </div>
-        <button type="button" className="wo__adj" onClick={function () { adjust(15); }} tabIndex={rest === null ? -1 : 0}>
-          +15
-        </button>
+
+        <div className={"app__timer" + (resting ? " is-on" : "")} aria-hidden={!resting}>
+          <span className="app__time">{clock(rest ?? 0)}</span>
+          <span className="app__bar">
+            <span style={{ transform: "scaleX(" + (resting ? (rest ?? 0) / restTotal : 0) + ")" }} />
+          </span>
+          <button
+            type="button"
+            className="app__adj"
+            tabIndex={resting ? 0 : -1}
+            onClick={function () {
+              adjust(-15);
+            }}
+          >
+            -15
+          </button>
+          <button
+            type="button"
+            className="app__adj"
+            tabIndex={resting ? 0 : -1}
+            onClick={function () {
+              adjust(15);
+            }}
+          >
+            +15
+          </button>
+          <button
+            type="button"
+            className="app__close"
+            tabIndex={resting ? 0 : -1}
+            aria-label="Pausentimer schließen"
+            onClick={function () {
+              setRest(null);
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+              <path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
       </div>
+      <StatusBar time="17:12" />
+      <span className="phone__island" aria-hidden="true" />
     </div>
   );
 }
@@ -176,7 +253,7 @@ const FACTS = [
     text: "Mit Ton, Vibration und einer Mitteilung, falls dein Handy in der Tasche ist.",
   },
   {
-    title: "Fertig um 17:15",
+    title: "Fertig um 18:03",
     text: "EPT rechnet mit und sagt dir, wann du durch bist. Praktisch, wenn danach noch was ansteht.",
   },
 ];
@@ -206,7 +283,12 @@ export default function Tracking() {
             })}
           </ul>
         </div>
-        <WorkoutDemo />
+        <div className="tracking__demo">
+          <div className="phone phone--light tracking__phone">
+            <WorkoutScreen />
+          </div>
+          <p className="tracking__try">Probier es aus und hak einen Satz ab.</p>
+        </div>
       </div>
     </section>
   );

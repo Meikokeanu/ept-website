@@ -1,28 +1,6 @@
 import Phone from "./Phone";
 import { StoreButton } from "./Brand";
 
-function Notification({
-  text,
-  className,
-}: {
-  text: string;
-  className: string;
-}) {
-  return (
-    <div className={"notif " + className} aria-hidden="true">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className="notif__icon" src="/apple-icon.png" alt="" width={40} height={40} />
-      <div className="notif__body">
-        <div className="notif__head">
-          <span>EPT</span>
-          <span className="notif__when">jetzt</span>
-        </div>
-        <p className="notif__text">{text}</p>
-      </div>
-    </div>
-  );
-}
-
 export default function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
@@ -65,8 +43,6 @@ export default function Hero() {
             className="hero__phone hero__phone--front"
             eager
           />
-          <Notification text="Neuer PR: Bankdrücken 100 kg." className="notif--one" />
-          <Notification text="Du bist jetzt Grinder 2." className="notif--two" />
         </div>
       </div>
     </section>

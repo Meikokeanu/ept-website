@@ -3,10 +3,10 @@ import { StoreButton } from "./Brand";
 export default function Closing() {
   return (
     <section id="download" className="closing" aria-labelledby="closing-title">
-      <div className="closing__badge" aria-hidden="true">
-        <span className="closing__halo" />
+      <div className="closing__logo">
+        <span className="closing__halo" aria-hidden="true" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/ranks/goat.webp" alt="" width={720} height={720} loading="lazy" />
+        <img src="/brand/app-icon.png" alt="EPT App Icon" width={480} height={480} loading="lazy" />
       </div>
       <div className="wrap closing__inner">
         <h2 id="closing-title" className="closing__title">

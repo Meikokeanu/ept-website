@@ -9,10 +9,10 @@ type PhoneProps = {
   style?: CSSProperties;
 };
 
-export function StatusBar() {
+export function StatusBar({ time = "9:41" }: { time?: string }) {
   return (
     <div className="phone__status" aria-hidden="true">
-      <span className="phone__time">9:41</span>
+      <span className="phone__time">{time}</span>
       <span className="phone__icons">
         <svg width="18" height="12" viewBox="0 0 18 12">
           <rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor" />

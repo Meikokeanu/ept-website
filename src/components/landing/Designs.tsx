@@ -114,9 +114,18 @@ export default function Designs() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/screens/card-thunder.webp"
-              alt="EPT Card im Design Thunder mit Rang, Bestwerten und Streak"
+              alt="EPT Card im Design Thunder"
               width={1068}
               height={764}
+              loading="lazy"
+              className="cards__card cards__card--mid"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/screens/card-prism.webp"
+              alt="EPT Card im Design Prism mit Rang, Bestwerten und Streak"
+              width={1068}
+              height={756}
               loading="lazy"
               className="cards__card cards__card--front"
             />
