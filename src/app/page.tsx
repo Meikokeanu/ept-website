@@ -1,23 +1,32 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import UspSection from "@/components/UspSection";
-import FeaturesSection from "@/components/FeaturesSection";
-import HowItWorks from "@/components/HowItWorks";
-import DownloadCta from "@/components/DownloadCta";
-import Footer from "@/components/Footer";
+import "./landing.css";
+import SiteNav from "@/components/landing/SiteNav";
+import Hero from "@/components/landing/Hero";
+import Statement from "@/components/landing/Statement";
+import RankClimb from "@/components/landing/RankClimb";
+import PastYou from "@/components/landing/PastYou";
+import Tracking from "@/components/landing/Tracking";
+import Progress from "@/components/landing/Progress";
+import Designs from "@/components/landing/Designs";
+import Features from "@/components/landing/Features";
+import Closing from "@/components/landing/Closing";
+import SiteFooter from "@/components/landing/SiteFooter";
 
 export default function Home() {
   return (
-    <>
-      <Navbar />
-      <main className="flex-1">
+    <div className="landing">
+      <SiteNav />
+      <main>
         <Hero />
-        <UspSection />
-        <FeaturesSection />
-        <HowItWorks />
-        <DownloadCta />
+        <Statement />
+        <RankClimb />
+        <PastYou />
+        <Tracking />
+        <Progress />
+        <Designs />
+        <Features />
+        <Closing />
       </main>
-      <Footer />
-    </>
+      <SiteFooter />
+    </div>
   );
 }
