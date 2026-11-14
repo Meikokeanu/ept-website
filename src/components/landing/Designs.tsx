@@ -46,7 +46,7 @@ export default function Designs() {
       <div className="wrap designs__grid">
         <div className="designs__copy">
           <h2 id="designs-title" className="h2">
-            Training darf auch gut aussehen.
+            Training muss auch gut aussehen.
           </h2>
           <p className="lead">
             Die ganze App im Look der Jahreszeit und zwölf Designs für deine

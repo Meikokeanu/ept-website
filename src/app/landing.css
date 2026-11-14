@@ -619,33 +619,10 @@
   border-radius: clamp(28px, 4vw, 56px) clamp(28px, 4vw, 56px) 0 0;
 }
 
-.climb__track {
+.climb__stagewrap {
   position: relative;
-  height: calc(100svh + 15 * 32svh);
-}
-
-.climb__sticky {
-  position: sticky;
-  top: 0;
-  height: 100svh;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-}
-
-.climb__glow {
-  position: absolute;
-  top: 50%;
-  right: 4%;
-  width: min(80vmin, 760px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  transform: translateY(-50%);
-  background-color: var(--glow);
-  opacity: 0.2;
-  filter: blur(120px);
-  transition: background-color 0.9s ease;
-  pointer-events: none;
+  padding: clamp(100px, 11vw, 160px) 0 clamp(40px, 5vw, 70px);
 }
 
 .climb__grid {
@@ -678,13 +655,19 @@
 }
 
 .climb__tier {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 11px 0;
   border-top: 1px solid var(--line-d);
   color: rgba(237, 232, 227, 0.34);
+  text-align: left;
   transition: color 0.4s ease;
+}
+
+.climb__tier:hover {
+  color: rgba(237, 232, 227, 0.85);
 }
 
 .climb__tier-name {
@@ -808,61 +791,102 @@
   font-variant-numeric: tabular-nums;
 }
 
-.climb__ticks {
-  margin-top: 22px;
-  display: flex;
-  gap: 5px;
-}
-
-.climb__tick {
-  width: 16px;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(237, 232, 227, 0.14);
-  transition: background-color 0.4s ease;
-}
-
-.climb__tick.is-on {
-  background: var(--glow);
-}
-
-.climb__hint {
+.climb__arrow {
   position: absolute;
-  left: 50%;
-  bottom: 28px;
-  transform: translateX(-50%);
-  font-size: 0.875rem;
-  color: var(--mute-d);
-  white-space: nowrap;
-  transition: opacity 0.4s ease;
+  top: 50%;
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  margin-top: -23px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--paper);
+  background: rgba(237, 232, 227, 0.08);
+  border: 1px solid rgba(237, 232, 227, 0.12);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
 }
 
-.climb__hint.is-hidden {
+.climb__arrow:hover {
+  background: rgba(237, 232, 227, 0.16);
+}
+
+.climb__arrow:disabled {
   opacity: 0;
+  pointer-events: none;
+}
+
+.climb__arrow--prev {
+  left: -64px;
+}
+
+.climb__arrow--next {
+  right: -64px;
+}
+
+.climb__strip {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(15, minmax(0, 1fr));
+  gap: 6px;
+  width: min(100%, 560px);
+}
+
+.climb__mini {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: 0.32;
+  filter: grayscale(0.7);
+  transition:
+    opacity 0.3s ease,
+    filter 0.3s ease,
+    transform 0.3s var(--ease);
+}
+
+.climb__mini img {
+  width: 100%;
+  height: 100%;
+}
+
+.climb__mini.is-past {
+  opacity: 0.7;
+  filter: none;
+}
+
+.climb__mini:hover {
+  opacity: 1;
+  filter: none;
+}
+
+.climb__mini.is-active {
+  opacity: 1;
+  filter: drop-shadow(0 0 10px var(--glow));
+  transform: scale(1.25);
+}
+
+@media (max-width: 1100px) {
+  .climb__arrow--prev {
+    left: -12px;
+  }
+
+  .climb__arrow--next {
+    right: -12px;
+  }
 }
 
 @media (max-width: 860px) {
-  .climb__track {
-    height: calc(100svh + 15 * 24svh);
-  }
-
-  .climb__sticky {
-    align-items: flex-start;
-    padding-top: 92px;
-  }
-
   .climb__grid {
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 36px;
   }
 
   .climb__title {
-    font-size: clamp(1.8rem, 7.6vw, 2.6rem);
-  }
-
-  .climb__lead {
-    margin-top: 12px;
-    font-size: 0.98rem;
+    font-size: clamp(2rem, 8.4vw, 2.8rem);
   }
 
   .climb__tiers {
@@ -870,11 +894,23 @@
   }
 
   .climb__badges {
-    width: min(74vw, 42svh, 340px);
+    width: min(64vw, 320px);
   }
 
   .climb__name {
-    font-size: clamp(2rem, 9vw, 2.8rem);
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+
+  .climb__strip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 8px;
+    width: min(100%, 360px);
+  }
+
+  .climb__mini {
+    width: calc((100% - 56px) / 8);
   }
 
   .climb__glow {
