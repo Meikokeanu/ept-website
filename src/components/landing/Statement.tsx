@@ -4,7 +4,7 @@ import { useRef, type CSSProperties } from "react";
 import { useScrollThrough } from "./hooks";
 
 const TEXT =
-  "Im Gym gibt es immer jemanden, der mehr drückt. Darum geht es nicht. Die einzige Frage ist, ob du mehr drückst als vor einem Monat. EPT zeigt dir die Antwort nach jedem Training.";
+  "Auf Social Media ist immer einer stärker. In EPT gibt es nur dich und deine Zahlen aus den letzten Einheiten. Gegen dich selbst zu gewinnen macht bei uns extrem viel Spaß.";
 
 export default function Statement() {
   const ref = useRef<HTMLParagraphElement>(null);
