@@ -4,12 +4,14 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { RANKS, TIERS, tierOf, formatNumber, POINT_RULES } from "./data";
 import { useInView, useReducedMotion } from "./hooks";
 
+// A real workout from the app (Tag 3, Sa. 14. Nov.), same numbers as its summary screen.
 const EXAMPLE = [
-  { label: "20 Arbeitssätze", points: 20 },
+  { label: "26 Arbeitssätze", points: 26 },
   { label: "Training abgeschlossen", points: 10 },
-  { label: "12.000 kg Volumen", points: 48 },
+  { label: "Volumen", points: 46 },
   { label: "2 Übungen mit mehr Gewicht", points: 20 },
-  { label: "Neuer Rekord beim Rudern", points: 25 },
+  { label: "2 Übungen mit mehr Wiederholungen", points: 10 },
+  { label: "2 neue Rekorde", points: 50 },
 ];
 
 const STEP_MS = 1500;
@@ -194,10 +196,17 @@ export default function RankClimb() {
               );
             })}
           </ul>
+          <p className="points__fine">
+            Aufwärmsätze zählen nicht. Beim Volumen wird jede Übung fair
+            gewichtet: Auf der Beinpresse bewegst du viel mehr Kilo als beim
+            Seitheben, deshalb zählt dort jedes Kilo etwas weniger.
+            Mehr Gewicht oder mehr Wiederholungen gibt es pro Übung einmal, im
+            Vergleich zu deiner letzten Einheit mit dieser Übung.
+          </p>
         </div>
 
         <div className="receipt" aria-label="Beispielrechnung für ein Training">
-          <p className="receipt__head">Ein ganz normaler Dienstag</p>
+          <p className="receipt__head">Ein echtes Training: Tag 3, 85 Minuten</p>
           <ul className="receipt__list">
             {EXAMPLE.map(function (row) {
               return (

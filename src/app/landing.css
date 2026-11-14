@@ -2228,3 +2228,10 @@
     opacity: 1;
   }
 }
+
+.points__fine {
+  margin-top: 22px;
+  max-width: 36em;
+  font-size: 0.9375rem;
+  color: var(--mute-d);
+}

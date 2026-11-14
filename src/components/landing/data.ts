@@ -56,8 +56,8 @@ export const POINT_RULES = [
   { label: "Jeder Arbeitssatz", points: 1 },
   { label: "Training abgeschlossen", points: 10 },
   { label: "Je 500 kg Volumen", points: 2 },
-  { label: "Gewicht gesteigert", points: 10 },
-  { label: "Mehr Wiederholungen bei gleichem Gewicht", points: 5 },
+  { label: "Mehr Gewicht als letztes Mal, pro Übung", points: 10 },
+  { label: "Mehr Wiederholungen bei gleichem Gewicht, pro Übung", points: 5 },
   { label: "Neuer persönlicher Rekord", points: 25 },
 ];
 
