@@ -32,7 +32,7 @@ const ITEMS = [
   },
   {
     title: "Trainingspläne",
-    text: "Fertig wie Push Pull Legs oder Upper Lower. Oder du baust dir deinen eigenen.",
+    text: "Bau dir deinen eigenen Plan, genau so, wie du trainierst. Oder starte mit einem fertigen wie Push Pull Legs oder Upper Lower und pass ihn an.",
     icon: (
       <Icon>
         <rect x="4" y="5" width="16" height="15" rx="3" />
