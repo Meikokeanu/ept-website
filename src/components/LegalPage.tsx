@@ -13,11 +13,9 @@ export default function LegalPage({ title, children }: LegalPageProps) {
     <div className="landing">
       <SiteNav />
       <main className="legal">
-        <article className="mx-auto max-w-[760px]">
+        <article className="legal__article">
           <h1 className="legal__title">{title}</h1>
-          <div className="mt-8 space-y-4 text-base leading-relaxed text-muted">
-            {children}
-          </div>
+          <div className="legal__body">{children}</div>
         </article>
       </main>
       <SiteFooter />

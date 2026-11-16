@@ -15,7 +15,7 @@ export default function SiteFooter() {
           <Link href="/nutzungsbedingungen">Nutzungsbedingungen</Link>
           <a href="mailto:ept.dev@outlook.de">Kontakt</a>
         </nav>
-        <p className="footer__copy">© 2026 Meiko Klingele. Alle Rechte vorbehalten.</p>
+        <p className="footer__copy">© 2026 Meiko Klingele und Jonas Brunke. Alle Rechte vorbehalten.</p>
       </div>
     </footer>
   );

@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/LegalPage";
+import LegalDocument from "@/components/LegalDocument";
 
 export const metadata: Metadata = {
   title: "Nutzungsbedingungen | EPT",
   description: "Nutzungsbedingungen von EPT.",
 };
 
-export default function NutzungsbedingungenPage() {
+export default function Page() {
   return (
     <LegalPage title="Nutzungsbedingungen">
-      <p>Inhalt wird noch eingefügt.</p>
+      <LegalDocument doc="terms" />
     </LegalPage>
   );
 }
